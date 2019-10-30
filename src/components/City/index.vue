@@ -1,24 +1,30 @@
 <template>
 	<div class="city_body">
 		<div class="city_list">
-		    <div class="city_hot">
-		        <h2>热门城市</h2>
-		        <ul class="clearfix">
-		            <li v-for="(item,index) in hotList" :key="item.id">{{item.nm}}</li>
-		        </ul>
-		    </div>
-		    <div class="city_sort" ref="city_sort">
-		        <div v-for="(item,index) in cityList" :key="item.index">
-		            <h2>{{item.index}}</h2>
-		            <ul>
-<!-- 		                <li>阿拉善盟</li>
-		                <li>鞍山</li>
-		                <li>安庆</li>
-		                <li>安阳</li> -->
-						<li v-for="(itemList,index2) in item.list" :key="itemList.id">{{itemList.nm}}</li>
-		            </ul>
-		        </div>	
-		    </div>
+			<Loading v-if="isLoading"></Loading>
+			<Scroller v-else ref="city_list">
+				<div>
+					<div class="city_hot">
+							        <h2>热门城市</h2>
+							        <ul class="clearfix">
+							            <li v-for="(item,index) in hotList" :key="item.id">{{item.nm}}</li>
+							        </ul>
+							    </div>
+							    <div class="city_sort" ref="city_sort">
+							        <div v-for="(item,index) in cityList" :key="item.index">
+							            <h2>{{item.index}}</h2>
+							            <ul>
+					<!-- 		                <li>阿拉善盟</li>
+							                <li>鞍山</li>
+							                <li>安庆</li>
+							                <li>安阳</li> -->
+											<li v-for="(itemList,index2) in item.list" :key="itemList.id">{{itemList.nm}}</li>
+							            </ul>
+							        </div>	
+							    </div>
+				</div>
+			</Scroller>
+
 		</div>
 		<div class="city_index">
 		    <ul>
@@ -39,12 +45,14 @@
 		data(){
 			return{
 				cityList:[],
-				hotList:[]
+				hotList:[],
+				isLoading:true
 			}
 		},
 		mounted() {
 			this.axios.get('/api/cityList').then((res)=>{
 				if(res.data.msg == 'ok'){
+					this.isLoading = false
 					let data = res.data.data.cities;
 					// [{index:'a',list:[{nm:'阿城',id:123}]}]
 					let {cityList,hotList} = this.formatCityList(data)
@@ -110,7 +118,9 @@
 		
 			handleToIndex(index){	
 				let h2 = this.$refs.city_sort.getElementsByTagName('h2')
-				this.$refs.city_sort.parentNode.scrollTop = h2[index].offsetTop;
+				// this.$refs.city_sort.parentNode.scrollTop = h2[index].offsetTop;
+				
+				this.$refs.city_list.toScrollTop(-h2[index].offsetTop)
 			}
 		}
 	}
