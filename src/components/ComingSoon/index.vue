@@ -32,15 +32,19 @@
 		data(){
 			return{
 				comingList:[],
-				isLoading:true
+				isLoading:true,
+				prevCityId:-1
 			}
 		},
-		mounted() {
-			this.axios.get('/api/movieComingList?cityId=10').then((res)=>{
+		activated() {
+			let cityId = this.$store.state.city.id;
+			if(this.prevCityId == cityId){return;}
+			this.axios.get('/api/movieComingList?cityId='+cityId).then((res)=>{
 				
 				if(res.data.msg == 'ok'){
 					this.isLoading = false
 					this.comingList = res.data.data.comingList
+					this.prevCityId = cityId
 				}
 			})
 		}

@@ -35,14 +35,19 @@
 		    return {
 				movieList:[],
 				pullDown:'',
-				isLoading:true
+				isLoading:true,
+				prevCityId:-1
 		    }
 		},
-		mounted() {
-			 this.axios.get('/api/movieOnInfoList?cityId=10').then((res)=>{
+		activated() {
+			
+			let cityId = this.$store.state.city.id;
+			if(this.prevCityId == cityId){return;}
+			 this.axios.get('/api/movieOnInfoList?cityId='+cityId).then((res)=>{
 				 if(res.data.msg == 'ok'){
 					this.isLoading = false
 					this.movieList = res.data.data.movieList
+					this.prevCityId = cityId
 					 // this.$nextTick(()=>{
 						// let scroll =  new BScroll(this.$refs.movie_body,{
 						// 	tap:true,
@@ -54,8 +59,7 @@
 						// 		this.pullDown = '正在更新中' 
 						// 	}
 
-						// })
-						 
+						// })				 
 						// scroll.on('touchEnd',(pos)=>{
 						// 	console.log(pos.y);
 						// 	if(pos.y > 30){
@@ -74,7 +78,6 @@
 						// })
 					 // })
 					 
-
 					 
 				 }
 			 })
