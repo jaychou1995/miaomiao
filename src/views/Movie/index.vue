@@ -30,6 +30,7 @@
 <script>
 	import Header from '@/components/Header/index.vue'
 	import BtabBar from '@/components/BtabBar/index.vue'
+	import {MessageBoxs} from '@/components/JS'
 	
 	export default {
 		name:'Movie',
@@ -40,6 +41,39 @@
 			return{
 				title:'喵喵电影'
 			}
+		},
+		mounted() {
+			
+			setTimeout(()=>{
+				this.axios.get('/api/getLocation').then((res)=>{
+					if(res.data.msg === 'ok'){
+						var nm = res.data.data.nm;
+						var id = res.data.data.id;
+						//如果城市相同直接返回
+						if( this.$store.state.city.id == id ){return;}
+						
+						MessageBoxs({
+							title:'定位到您在',
+							city:nm,
+							content:'是否要切换至该城市进行探索?',
+							cancel:'取消',
+							ok:'切换',
+							handleCancel(){
+								console.log(1);
+							},
+							handleOk(){
+								console.log(2);
+								window.localStorage.setItem('nowNm',nm);
+								window.localStorage.setItem('nowId',id);
+								//window.location.reload();重新加载
+								window.location.reload();
+							}
+						})
+						
+					}
+				})
+			},1200)
+
 		}
 	}
 </script>
