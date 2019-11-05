@@ -24,6 +24,7 @@
 		</div>
 		
 		<BtabBar></BtabBar>
+		<router-view name='detail'></router-view>
 	</div>
 </template>
 

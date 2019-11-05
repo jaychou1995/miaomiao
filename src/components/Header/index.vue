@@ -32,4 +32,5 @@
 		line-height: 50px;
 		font-weight: normal;
 	}
+	#header i{ position: absolute; left: 5px; top: 50%; margin-top: -13px; font-size: 26px;}
 </style>

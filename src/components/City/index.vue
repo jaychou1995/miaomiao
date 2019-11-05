@@ -18,7 +18,7 @@
 							                <li>鞍山</li>
 							                <li>安庆</li>
 							                <li>安阳</li> -->
-											<li v-for="(itemList,index2) in item.list" :key="itemList.id" @tap="handleToCity(item.nm,item.id)">{{itemList.nm}}</li>
+											<li v-for="(itemList,index2) in item.list" :key="itemList.id" @tap="handleToCity(itemList.nm,itemList.id)">{{itemList.nm}}</li>
 							            </ul>
 							        </div>	
 							    </div>
